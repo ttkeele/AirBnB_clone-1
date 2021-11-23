@@ -57,11 +57,7 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        '''delete obj from __objects if it’s inside -
-         if obj is equal to None, the method should not do anything'''
-        if obj is not None:
-            del self.all()[obj.__class__.__name__ + '.' + obj.id]
-
-    def close(self):
-        '''close json file'''
-        self.reload()
+        '''Delete an object from __objects'''
+        if obj:
+            del self.__objects[obj.__class__.__name__ + '.' + obj.id]
+            
