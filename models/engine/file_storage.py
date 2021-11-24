@@ -67,4 +67,4 @@ class FileStorage:
 
     def close(self):
         """Saves storage dictionary to file"""
-        self.save() 
+        self.reload() 
