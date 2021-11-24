@@ -10,11 +10,12 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import os
 
-mapped_classes = (City, State, User, Place, Amenity, Review)
 
 class DBStorage:
     """Class for database storage"""
+    __classes = [State, City, User, Place, Amenity, Review]
     __engine = None
     __session = None
 
