@@ -10,14 +10,11 @@ class FileStorage:
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
-        if cls is None:
-            return FileStorage.__objects
+        if cls:
+            return {key: self.__objects[key] for key in self.__objects
+                    if self.__objects[key].__class__ == cls}
         else:
-            temp = {}
-            for key, val in FileStorage.__objects.items():
-                if val.__class__.__name__ == cls:
-                    temp[key] = val
-            return temp
+            return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -58,13 +55,7 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        '''Deletes an object from storage'''
+        '''Deletes obj from __objects if its there'''
         if obj:
-            for key in self.__objects:
-                if self.__objects[key] == obj:
-                    del self.__objects[key]
-                    return
-
-    def close(self):
-        '''closes json'''
-        self.reload()
+            obj_key = obj.__class__.__name__ + "." + obj.id
+            self.__objects.pop(obj_key, None)
