@@ -16,9 +16,8 @@ class State(BaseModel, Base):
                               backref="state")
     else:
         @property
-        def cities(self)
+        def cities(self):
             """getter for cities when using filestorage"""
             from models import storage
             return [city for city in storage.all(City).values()
                     if city.state_id == self.id]
-
