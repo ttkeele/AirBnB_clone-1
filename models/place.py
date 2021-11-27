@@ -1,15 +1,15 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, String, Integer, Float, ForeignKey
-from sqlalchemy.sql.schema import Table
+from models.review import Review
+from models.amenity import Amenity
+import os
+from sqlalchemy import Column, String, Integer, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship
-from os import getenv
 
 
-metadata = Base.metadata
-place_amenity = Table(
-    'place_amenity', metadata
+Table('place_amenity',
+      Base.metadata,
       Column(
           'place_id', String(60), ForeignKey('places.id'),
           primary_key=True, nullable=False),
@@ -36,31 +36,33 @@ class Place(BaseModel, Base):
         "Amenity", secondary=place_amenity, viewonly=False,
         backref='places')
 
-    if getenv('HBNB_TYPE_STORAGE') == "file":
+    if os.getenv('HBNB_TYPE_STORAGE') == "db":
+        reviews = relationship('Review',
+                               cascade="all, delete, delete-orphan",
+                               backref='place')
+        amenities = relationship('Amenity',
+                                 secondary="place_amenity",
+                                 viewonly=False,
+                                 backref="place_amenities"
+                                 )
+    else:
         @property
         def reviews(self):
             """getter for reviews"""
             from models import storage
-            new_list = []
-            for key, obj_rev in storage.all(Review).items():
-                if obj_rev.place_id == self.id:
-                    new_list.append(obj_rev)
-            return new_list
+            return [review for review in storage.all(Review).values()
+                    if review.place_id == self.id]
 
         @property
         def amenities(self):
             """getter for amenities"""
-            from models.amenity import Amenity
             from models import storage
-            new_list = []
-            for key, obj_amenity in storage.all(Amenity).items():
-                if obj_amenity.id == self.amenity_ids:
-                    new_list.append(obj_amenity)
-            return new_list
+            return [amenity for amenity in storage.all(Amenity).values()
+                    if amenity.id in self.amenity_ids]
 
         @amenities.setter
         def amenities(self, obj):
             """adds an ammenity to object"""
-            from models.amenity import Amenity
-            if type(obj) == Amenity:
+            from models import storage
+            if isinstance(obj, Amenity):
                 self.amenity_ids.append(obj.id)
