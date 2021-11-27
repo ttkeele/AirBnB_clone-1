@@ -2,53 +2,38 @@
 """Unittests for testing the User class """
 
 
-import models
-from os import getenv
-import unittest
+
 from tests.test_models.test_base_model import test_basemodel
 from models.user import User
-from sqlalchemy.exc import OperationalError
 
 
 class test_User(test_basemodel):
-    """Unittests for testing the User class """
+    """ """
 
     def __init__(self, *args, **kwargs):
-        """Instantiation of User instance  """
+        """  """
         super().__init__(*args, **kwargs)
         self.name = "User"
         self.value = User
-        self.user = User(email="madi@yahoo.com", password="moocow")
+        self.dict = {'email': "test@test.net", 'password': "test_password",
+                     'first_name': "", 'last_name': ""}
 
     def test_first_name(self):
-        """test first name of user instance """
-        self.assertEqual(type(self.user.first_name), None)
+        """ """
+        new = self.value(**self.dict)
+        self.assertEqual(type(new.first_name), str)
 
     def test_last_name(self):
-        """test last name of user instance """
-        self.assertEqual(type(self.user.last_name), None)
+        """ """
+        new = self.value(**self.dict)
+        self.assertEqual(type(new.last_name), str)
 
     def test_email(self):
-        """test email of user instance """
-        self.assertEqual(type(self.user.email), str)
-        self.assertEqual(self.user.email, "madi@yahoo.com")
+        """ """
+        new = self.value(**self.dict)
+        self.assertEqual(type(new.email), str)
+
     def test_password(self):
-        """test if the password is string """
-        self.assertEqual(type(self.user.password), str)
-        self.assertEqual(self.user.password, "moocow")
-
-    @unittest.skipIf(getenv('HBNB_TYPE_STORAGE') != 'db', "not supported")
-    def test_without_mandatory_arguments(self):
-        """Check for mandatory arguments """
-        new = self.value()
-        with self.assertRaises(OperationalError):
-            try:
-                new.save()
-            except Exception as error:
-                models.storage._DBStorage__session.rollback()
-                raise error
-
-    @unittest.skipIf(getenv('HBNB_TYPE_STORAGE') == 'db', "not supported")
-    def test_is_subclass(self):
-        """Check that State is a subclass of Basemodel"""
-        self.assertTrue(isinstance(self.user, User))
+        """ """
+        new = self.value(**self.dict)
+        self.assertEqual(type(new.password), str)
