@@ -2,96 +2,74 @@
 """unitest for testing Place class """
 
 
-import models
-from os import getenv
-import unittest
+
 from tests.test_models.test_base_model import test_basemodel
 from models.place import Place
-from models.city import City
-from models.user import User
-from models.state import State
-from sqlalchemy.exc import OperationalError
 
 class test_Place(test_basemodel):
-    """Unittests for testing the place class """
+    """ """
 
     def __init__(self, *args, **kwargs):
-        """inicialization values  """
+        """ """
         super().__init__(*args, **kwargs)
         self.name = "Place"
         self.value = Place
-        self.state = State(name="California")
-        self.city = City(name="Oakland", state_id=self.state.id)
-        self.user = User(name="Trent", email="trentk@yahoo.com")
-        self.place = Place(
-            user_id=self.user.id, city_id=self.city.id, name="Max",
-            number_rooms=4, number_bathrooms=3, max_guest=5,
-            price_by_night=900)
-
+        self.dict = {'city_id': self.city.id, 'user_id': self.user.id,
+                     'description': "", 'latitude': 0.0, 'longitude': 0.0,
+                     'name': "test_place"}
     def test_city_id(self):
-        """test city id """
+        """ """
+        new = self.value(**self.dict)
         self.assertEqual(type(self.place.city_id), str)
-        self.assertEqual(self.city.id, self.place.city_id)
 
     def test_user_id(self):
-        """test user id """
+        """ """
+        new = self.value(**self.dict)
         self.assertEqual(type(self.place.user_id), str)
-        self.assertEqual(self.user.id, self.place.user_id)
 
     def test_name(self):
-        """test name """
-        self.assertEqual(type(self.place.name), str)
+        """ """
+        new = self.value(**self.dict)
         self.assertEqual(type(self.place.name), str)
 
     def test_description(self):
-        """test description """
-        self.assertEqual(self.place.description, None)
+        """ """
+        new = self.value(**self.dict)
+        self.assertEqual(type(new.description), str)
 
     def test_number_rooms(self):
-        """test number of rooms """
-        self.assertEqual(type(self.place.number_rooms), int)
-        self.assertEqual(self.place.number_rooms, 4)
+        """ """
+        new = self.value(**self.dict)
+        self.assertEqual(type(new.number_rooms), type(None))
+
     def test_number_bathrooms(self):
-        """test number of bathrooms """
-        self.assertEqual(type(self.place.number_bathrooms), int)
-        self.assertEqual(self.place.number_bathrooms, 3)
+        """ """
+        new = self.value(**self.dict)
+        self.assertEqual(type((new.number_bathrooms), type(None))
+
+
     def test_max_guest(self):
-        """test the max number of guests """
-        self.assertEqual(type(self.place.max_guest), int)
-        self.assertEqual(self.place.max_guest, 5)
+        """ """
+        new = self.value(**self.dict)
+        self.assertEqual(type(new.max_guest), type(None))
+
     def test_price_by_night(self):
-        """test price per night """
-        self.assertEqual(type(self.place.price_by_night), int)
-        self.assertEqual(self.place.price_by_night, 900)
+        """ """
+        new = self.value(**self.dict)
+        self.assertEqual(type(new.price_by_night), type(None))
+
     def test_latitude(self):
-        """test amenity latitude """
-        self.assertEqual(type(self.place.latitude), None)
+        """ """
+        new = self.value(**self.dict)
+        self.assertEqual(type(new.latitude), float)
+
 
     def test_longitude(self):
-        """test amenity longitude """
-        self.assertEqual(type(self.place.latitude), None)
+        """ """
+        new = self.value(**self.dict)
+        self.assertEqual(type(new.latitude), float)
 
     def test_amenity_ids(self):
-        """test amenity ids """
-        self.assertEqual(type(self.place.amenity_ids), list)
-        self.assertEqual(self.place.amenity_ids, [])
-
-
-
-    @unittest.skipIf(getenv('HBNB_TYPE_STORAGE') != 'db', "not supported")
-    def test_without_mandatory_arguments(self):
-    """ """
-    new = self.value()
-    with self.assertRaises(OperationalError):
-        try:
-            new.save()
-        except Exception as error:
-            models.storage._DBStorage__session.rollback()
-            raise error
-
-
-    @unittest.skipIf(getenv('HBNB_TYPE_STORAGE') == 'db', "not supported")
-    def test_is_subclass(self):
-        """Check that Place is a subclass of Basemodel"""
-        place = self.value()
-        self.assertTrue(isinstance(place, Place))
+        """ """
+        new = self.value(**self.dict)
+        self.assertEqual(type(new.amenity_ids), list)
