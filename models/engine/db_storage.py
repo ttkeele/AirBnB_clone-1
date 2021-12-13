@@ -38,9 +38,10 @@ class DBStorage:
             objs.update({"{}.{}".format(cls.__name__, item.id): item
                          for item in self.__session.query(cls)})
         elif cls is None:
-            for i in mapped_classes:
-                for item in self.__session.query(c)
-                return objs
+            for c in mapped_classes:
+                objs.update({"{}.{}".format(c.__name__, item.id): item
+                             for item in self.__session.query(c)})
+        return objs
 
     def new(self, obj):
         """adds an object to the session"""
