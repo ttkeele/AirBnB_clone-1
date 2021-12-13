@@ -7,12 +7,14 @@ from flask import Flask
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
+
 @app.route('/')
 def hello():
     """
     sets the route for '/'
     """
     return "Hello HBNB!"
+
 
 @app.route('/hbnb')
 def hbnb_route():
@@ -21,6 +23,7 @@ def hbnb_route():
     """
     return "HBNB"
 
+
 @app.route('/c/<text>')
 def c_route(text):
     """
@@ -28,6 +31,7 @@ def c_route(text):
     replaces '_' in <text> with ' '
     """
     return "C {}".format(text.replace('_', ' '))
+
 
 @app.route('/python/', defaults={'text': 'is cool'})
 @app.route('/python/<text>')
@@ -39,6 +43,7 @@ def python_route(text="is cool"):
     """
     return "Python {}".format(text.replace('_', ' '))
 
+
 @app.route('/number/<int:n>')
 def number_route(n):
     """
@@ -46,6 +51,7 @@ def number_route(n):
     only accepts integers
     """
     return "{} is a number".format(n)
+
 
 if __name__ == '__main__':
 
