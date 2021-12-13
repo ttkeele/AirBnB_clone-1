@@ -45,7 +45,7 @@ def number_route(n):
     displays '<n> is a number'
     only accepts integers
     """
-    return "{:d} is a number".format(n)
+    return "{} is a number".format(n)
 
 if __name__ == '__main__':
 
