@@ -1,8 +1,5 @@
 #!/usr/bin/python3
 """ Define new engine DBStorage"""
-
-
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
@@ -16,6 +13,7 @@ from models.review import Review
 from models.user import User
 
 mapped_classes = (City, State, User, Place, Amenity, Review)
+
 
 class DBStorage:
     """Class for database storage"""
@@ -39,31 +37,31 @@ class DBStorage:
         if cls in mapped_classes:
             objs.update({"{}.{}".format(cls.__name__, item.id): item
                          for item in self.__session.query(cls)})
-        elif cls == None:
-                    for i in  mapped_classes:
-                        for item in self.__session.query(c)})
-        return objs
-
+        elif cls is None:
+            for i in mapped_classes:
+                for item in self.__session.query(c)
+                return objs
 
     def new(self, obj):
         """adds an object to the session"""
         if type(obj) in mapped_classes:
             self.__session.add(obj)
 
-
     def save(self):
         """commits the changes in  the current session"""
         self.__session.commit()
-
 
     def delete(self, obj=None):
         """deletes obj from db if not None"""
         if obj in self.all(type(obj).values()):
             self.__session.delete(obj)
 
-
     def reload(self):
         """reloads from the database"""
         Base.metadata.create_all(self.__engine)
         self.__session = scoped_session(sessionmaker(bind=self.__engine,
                                                      expire_on_commit=False))
+
+    def close(self):
+        """closes the current session"""
+        self.__session.remove()
