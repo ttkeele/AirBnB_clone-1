@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """Starts a Flask app"""
 
-if __name__ == '__main__':
 from flask import Flask, render_template
 
 
@@ -62,4 +61,6 @@ def number_route(n):
      """
      return render_template('6-number_odd_or_even.html', n=n)
 
- app.run(host='0.0.0.0', port='5000')
+
+ if __name__ == '__main__':
+     app.run(host='0.0.0.0', port='5000')
