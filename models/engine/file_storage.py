@@ -49,7 +49,7 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
 
@@ -60,6 +60,6 @@ class FileStorage:
             obj_key = obj.__class__.__name__ + "." + obj.id
             self.__objects.pop(obj_key, None)
 
-     def close(self):
-         """reloads the objects from file"""
-         self.reload()
+    def close(self):
+        """reloads the objects from file"""
+        self.close()
